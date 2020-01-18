@@ -1,0 +1,41 @@
+﻿@using OnlineShopPodaci.Model;
+@using OnlineShop.ViewModels;
+
+@model List<ShowCategoriesVM>
+
+@{
+    
+}
+
+<style>
+
+    #maindiv{
+        width:25%;
+        float:left;
+        margin:10px;
+        padding:0px;
+        border-radius: 5px;
+    }
+
+    #maindiv:hover{
+        opacity:0.9;
+        border:1px solid black;
+    }
+
+
+</style>
+
+@foreach (var c in Model)
+{
+        <div id="maindiv" class="col-lg-3 col-md-4 col-sm-6 mb-4">
+            <div class="card h-100">
+                <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
+                <div class="card-body">
+                    <h4 class="card-title">
+                        <a href="/Product/ShowSubCategories?ID=@c.CategoryID">@c.CategoryName</a>
+                    </h4>
+                </div>
+            </div>
+        </div>
+}
+

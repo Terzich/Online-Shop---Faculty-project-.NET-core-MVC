@@ -1,0 +1,58 @@
+﻿@using OnlineShopPodaci.Model;
+
+@model OnlineShop.ViewModels.AddOrUpdateProductVM
+
+@{
+    ViewData["Title"] = "Dodaj proizvod";
+}
+
+<h1>Dodaj ili izmjeni proizvod</h1>
+<br />
+<br />
+
+<form asp-action="SaveProduct">
+
+    <input asp-for="ProductID" value="@Model.ProductID" style="display:none" />
+
+
+    <p>Broj proizvoda</p>
+    <input type="text" asp-for="@Model.ProductNumber" value="@Model.ProductNumber" required />
+    <br />
+
+    <p>Podkategorija</p>
+    <select asp-for="SubCategoryID" asp-items="@Model.Subcategories" required>
+        <option>Odaberite podkategoriju proizvoda</option>
+    </select>
+    <br />
+
+    <p>Proizvodjac</p>
+    <select asp-for="ManufacturerID" asp-items="@Model.Manufacturers" required>
+        <option>Odaberite proizvodjaca</option>
+    </select>
+    <br />
+
+    <a href="/Product/AddManufacturer?Model=@Model">Dodaj novog proizvodjaca</a>
+
+    <br />
+    <p>Naziv proizvoda</p>
+    <input type="text" asp-for="ProductName" value="@Model.ProductName" required />
+    <br />
+
+    <p>URL slike</p>
+    <input type="url" asp-for="ImageURL" value="@Model.ImageURL" />
+    <br />
+
+    <p>Opis</p>
+    <input type="text" style="width:200px; height:150px;" asp-for="Description" value="@Model.Description" />
+    <br />
+
+    <p>Cijena</p>
+    <input type="text" asp-for="UnitPrice" value="@Model.UnitPrice" required/>
+    <br /><br />
+
+    <input type="submit" value="POTVRDI" />
+</form>
+<script>
+   
+
+

@@ -1,0 +1,93 @@
+﻿@using OnlineShop.ViewModels
+
+@{
+    ViewData["Title"] = "ShowProducts";
+    
+
+}
+
+@model List<ShowProductsVM>
+
+<h1>Prikaz proizvoda podkategorije</h1>             <!-- fali parametar subcategory name da se prikaze ime podkategorije-->
+
+<style>
+    #maindiv{
+        width:25%;
+        float:left;
+        margin:5px;
+        height:350px;
+        padding:0px;
+        border-radius: 5px;
+    }
+
+    #maindiv:hover{
+        opacity:0.9;
+        border:1px solid black;
+    
+    }
+
+    #Added{
+    
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    width: 100%;
+    height:50px;
+    padding: 15px 25px 15px 10px;
+    line-height: 16px;
+    color: #fff;
+    background-color: #91BD09;
+    opacity: 0.95;
+    text-align:center;
+    box-sizing:border-box;
+    border-radius:4px;
+    }
+
+</style>
+
+
+<div id="Added">Artikal uspješno dodan u korpu !</a>
+    
+</div><br />
+
+
+@foreach (var i in Model)
+{
+        <div id="maindiv" class="col-lg-3 col-md-4 col-sm-6 mb-4">
+            <div class="card h-100">
+                <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
+                <div class="card-body">
+                    <h4 class="card-title">
+                        <a href="/Product/ProductDetails?ID=@i.ProductID">@i.ProductName</a>
+                    </h4>
+                    <p class="card-text">Cijena : @i.UnitPrice   KM</p>
+                    <p class="card-text">Proizvođač : @i.ManufacturerName</p>
+                    <input type="number" id="@i.ProductID" value="1" min="1" />
+                    <button onclick="AddToCart(@i.ProductID)">Dodaj u košaricu</button>
+                </div>
+            </div>
+        </div>
+        }
+
+<script>
+
+    function AddToCart(id) {
+
+        var quantity = document.getElementById(id).value;
+        //user,productid,quantity are sent
+        var request = new XMLHttpRequest();
+        request.onreadystatechange = function () { };
+        request.open('POST', "/Cart/AddToCart/?productid=" + id + "&userid=" + 6 + "&q=" + quantity);
+        request.send()
+        document.getElementById(id).value = 1;
+        document.getElementById("Added").style.display = "block";
+        setTimeout(function() {
+        document.getElementById("Added").style.display = "none"; }, 3500);
+               
+        //alert("Proizvod dodan u korpu !");
+    }
+   
+
+</script>

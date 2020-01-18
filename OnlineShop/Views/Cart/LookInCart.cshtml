@@ -1,0 +1,159 @@
+﻿@using OnlineShopPodaci.Model;
+@{
+
+}
+@model List<OnlineShop.ViewModels.LookInCartVM>
+<!DOCTYPE html>
+
+<style>
+    #QuantityChangeMsg{
+        display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    width: 100%;
+    height:50px;
+    padding: 15px 25px 15px 10px;
+    line-height: 16px;
+    color: #fff;
+    background-color: #91BD09;
+    opacity: 0.95;
+    text-align:center;
+    box-sizing:border-box;
+    border-radius:4px;
+    }
+</style>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>LookInCart</title>
+</head>
+<body>
+    <h2 style="color:maroon">Košarica</h2> <br />
+    @if (Model.Count() == 0)
+    {
+        <h5>U košarici nema artikala.</h5> <br />
+        <a href="/Product/Show2">Kreni sa kupovinom.</a>
+    }
+
+    else
+    {
+        <div id="QuantityChangeMsg">Uspješno ažurirana količina</div>
+    <br />
+    <br />
+
+    <div id="tabela">
+        <table border="1">
+            <tr>
+                <th>Šifra proizvoda</th>
+                <th>Naziv proizvoda</th>
+                <th>Kategorija</th>
+                <th>Količina</th>
+                <th>Cijena po komadu</th>
+                <th>Ukupno</th>
+                <th>Akcija</th>
+
+            </tr>
+            @foreach (var x in Model)
+            {
+                <tr>
+                    <td>@x.ProductNumber</td>
+                    <td>@x.ProductName</td>
+                    <td>@x.SubCategoryName</td>
+                    <td>
+                        @*<input type="text" pattern="[0-10]" required min="0" id="@x.ProductID" value="@x.Quantity"/>*@
+
+                    <select id="@x.ProductID" onchange="Sett(@x.ProductID)">
+                        @for (int i = 1; i <= 10; i++) //ovdje ce biti iz VM units in stock value za kraj for petlje
+                        {
+                            if (i == x.Quantity)
+                            {
+                                <option selected value="@i">@i</option>
+}
+                            else
+                            {
+                                <option value="@i">@i</option>
+}
+                        }
+
+                    </select>
+                </td>
+                <td>@x.UnitPrice BAM</td>
+                <td>@(x.Quantity * x.UnitPrice) BAM</td>
+                <td><a href="/Cart/RemoveFromCart?productid=@x.ProductID&userid=6">Ukloni iz korpe</a> </td>
+            </tr>
+        }
+        </table>
+    </div>
+
+    <br />
+  <br />
+    <br /><a href="/Cart/DeleteCart?userid=6">Očisti košaricu </a>
+    <br /><a href="/Product/Show2">Nazad na kupnju</a>
+    }
+</body>
+</html>
+
+<script>
+
+    function Sett(id) {
+        var quantity = document.getElementById(id).value;
+        //alert(quantity);
+        //alert(id);
+        
+        //var request = new XMLHttpRequest();
+        //request.onreadystatechange = function () { };
+        //request.open('POST', "/Cart/SetQuantity/?productid=" + id + "&userid=" + 6 + "&q=" + quantity);
+        //request.send()
+        //location.reload()
+        $.ajax({
+                        url: '/Cart/SetQuantity',
+                        data: { productid: id,userid:6,q:quantity },
+                        type: "POST",
+                        
+        });
+        
+        document.getElementById("QuantityChangeMsg").style.display = "block";
+        setTimeout(function() {
+            document.getElementById("QuantityChangeMsg").style.display = "none";
+        }, 3500);
+
+         //$( "#tabela" ).load(window.location.url + " #tabela" );
+        //$("#tabela").load("#tabela");
+
+
+    }
+
+
+
+
+
+
+    //ne valja nista
+        //var quantity = document.getElementById(id).value;
+
+        //field.addEventListener("keyup", function (event) {
+        //    if (event.keyCode === 13) {
+        //var request = new XMLHttpRequest();
+        //request.onreadystatechange = function () { };
+        //request.open('POST', "/Cart/SetQuantity/?productid=" + id + "&userid=" + 6 + "&q=" + quantity);
+        //request.send()
+        //document.getElementById(id).value = 1;
+        //document.getElementById("QuantityChangeMsg").style.display = "block";
+        //setTimeout(function () {
+        //    document.getElementById("QuantityChangeMsg").style.display = "none";
+        //}, 2500);
+
+        //location.reload();
+        //    }
+        //});
+        //user,productid,quantity are sent
+        
+
+        //alert("Proizvod dodan u korpu !");
+
+
+
+</script>
